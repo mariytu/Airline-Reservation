@@ -1,0 +1,9 @@
+-- Un ejemplo de SP
+-- DROP FUNCTION IF EXISTS NombreProcedure () $$
+-- CREATE OR REPLACE FUNCTION NombreProcedure ()
+-- RETURNS integer AS
+-- $BODY$ BEGIN
+--		SELECT Count(*) FROM FlightState;
+--	END;
+-- $BODY$ LANGUAGE 'plpgsql' VOLATILE
+-- COST 100 $$

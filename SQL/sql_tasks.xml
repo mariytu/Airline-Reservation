@@ -1,0 +1,96 @@
+<project name = "Database creation" basedir = ".">
+
+	<property name = "sql.driver" value = "org.postgresql.Driver"/>
+	<property name = "sql.classpath" value = "../Lib/postgresql-connector-java/postgresql-9.4-1205.jdbc42.jar"/>
+	<property name = "sql.url" value = "jdbc:postgresql://localhost/Airline_Reservation1"/>
+	<property name = "sql.user" value = "postgres"/>
+	<property name = "sql.pass" value = "6279angelito"/>
+	
+	<target name = "CreateTables">
+		<sql
+			driver = "${sql.driver}" 
+			url = "${sql.url}" 
+			userid = "${sql.user}" 
+			password = "${sql.pass}"
+			autocommit = "true"
+			classpath = "${sql.classpath}"
+			delimiter = "$$">
+			<path>
+				<fileset dir = ".">
+					<include name = "1*.sql"/>
+				</fileset>
+			</path>
+		</sql>
+	</target>
+	
+	<target name = "CreateViews">
+		<sql
+			driver = "${sql.driver}" 
+			url = "${sql.url}" 
+			userid = "${sql.user}" 
+			password = "${sql.pass}"
+			autocommit = "true"
+			classpath = "${sql.classpath}"
+			delimiter = "$$">
+			<sort>
+				<fileset dir = ".">
+					<include name = "2*.sql"/>
+				</fileset>
+			</sort>
+		</sql>
+	</target>
+	
+	<target name = "CreateProcedures">
+		<sql
+			driver = "${sql.driver}" 
+			url = "${sql.url}" 
+			userid = "${sql.user}" 
+			password = "${sql.pass}"
+			autocommit = "true"
+			classpath = "${sql.classpath}"
+			delimiter = "$$">
+			<sort>
+				<fileset dir = ".">
+					<include name = "3*.sql"/>
+					<include name = "4*.sql"/>
+					<include name = "5*.sql"/>
+					<include name = "6*.sql"/>
+					<include name = "7*.sql"/>
+					<include name = "8*.sql"/>
+				</fileset>
+			</sort>
+		</sql>
+	</target>
+	
+	<target name = "UpdateModel">
+		<sql
+			driver = "${sql.driver}" 
+			url = "${sql.url}" 
+			userid = "${sql.user}" 
+			password = "${sql.pass}"
+			autocommit = "true"
+			classpath = "${sql.classpath}"
+			delimiter = "$$">
+			<sort>
+				<fileset dir = ".">
+					<include name = "900_UpdateModel.sql"/>
+				</fileset>
+			</sort>
+		</sql>
+	</target>
+
+	<target name = "CreateModel">
+		<antcall target = "CreateTables" />
+	</target>
+	
+	<target name = "CreateLogic">
+		<antcall target = "UpdateModel" />
+		<antcall target = "CreateViews" />
+		<antcall target = "CreateProcedures" />
+	</target>
+	
+	<target name = "CreateDatabase">
+		<antcall target = "CreateModel" />
+		<antcall target = "CreateLogic" />
+	</target>
+</project>
