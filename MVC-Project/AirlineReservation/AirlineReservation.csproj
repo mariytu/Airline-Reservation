@@ -185,6 +185,7 @@
     <Compile Include="Helpers\HMTLHelperExtensions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Aircraft.cs" />
+    <Compile Include="Models\City.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Passenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

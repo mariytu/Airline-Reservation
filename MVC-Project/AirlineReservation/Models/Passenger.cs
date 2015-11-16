@@ -43,8 +43,10 @@ namespace AirlineReservation.Models
         [StringLength(45)]
         public string EmailAddress { get; set; }
 
-        [DisplayName("Dirección")]
         public long CityID { get; set; }
+
+        [DisplayName("Ciudad")]
+        public City City { get; set; }
         #endregion
 
         #region [Metodos]
@@ -63,6 +65,9 @@ namespace AirlineReservation.Models
             this.AddressLine = dr["addressLine"].ToString();
             this.EmailAddress = dr["emailAddress"].ToString();
             this.CityID = Convert.ToInt64(dr["cityID"]);
+
+            this.City = new City();
+            this.City.Seleccionar(this.CityID);
         }
 
         /// <summary>
@@ -249,6 +254,11 @@ namespace AirlineReservation.Models
                 }
             }
             catch (Exception ex) { }
+        }
+
+        public List<City> CityTodos()
+        {
+            return City.Todos();
         }
 
         /// <summary>

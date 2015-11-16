@@ -67,6 +67,14 @@
                             @Html.DisplayFor(model => model.EmailAddress)
                         </dd>
 
+                        <dt>
+                            @Html.DisplayNameFor(model => model.City)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.City.Name)
+                        </dd>
+
                     </dl>
 
                     @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-primary" })
