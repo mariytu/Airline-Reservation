@@ -1,0 +1,69 @@
+﻿@model AirlineReservation.Models.Aircraft
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>Eliminar</h2>
+    </div>
+    <div class="col-sm-8">
+        <div class="title-action">
+            @Html.ActionLink("Volver a la Lista", "Index", new { pagina = 1 }, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Avión</h5>
+                </div>
+                <div class="ibox-content">
+                    <h4 class="text-danger">¿Estás seguro que quieres eliminar esto?</h4>
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Capacity)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Capacity)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Code)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Code)
+                        </dd>
+
+                    </dl>
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-actions no-color">
+                            <input type="submit" value="Delete" class="btn btn-primary" />
+                            @Html.ActionLink("Volver a la Lista", "Index", new { pagina = 1 }, new { @class = "btn btn-white" })
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

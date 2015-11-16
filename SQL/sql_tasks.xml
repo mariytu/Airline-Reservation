@@ -2,7 +2,7 @@
 
 	<property name = "sql.driver" value = "org.postgresql.Driver"/>
 	<property name = "sql.classpath" value = "../Lib/postgresql-connector-java/postgresql-9.4-1205.jdbc42.jar"/>
-	<property name = "sql.url" value = "jdbc:postgresql://localhost/Airline_Reservation1"/>
+	<property name = "sql.url" value = "jdbc:postgresql://localhost/Airline_Reservation"/>
 	<property name = "sql.user" value = "postgres"/>
 	<property name = "sql.pass" value = "6279angelito"/>
 	

@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Airline Reservation</title>
+
+    @if (IsSectionDefined("Styles"))
+        {@RenderSection("Styles", required: false)}
+
     @Styles.Render("~/Content/css")
     @Styles.Render("~/font-awesome/css")
 </head>
@@ -21,7 +25,7 @@
         <div id="page-wrapper" class="gray-bg">
 
             <!-- Top Navbar -->
-            <!-- @Html.Partial("_TopNavbar") -->
+            @Html.Partial("_TopNavbar")
 
             <!-- Main view  -->
             @RenderBody()

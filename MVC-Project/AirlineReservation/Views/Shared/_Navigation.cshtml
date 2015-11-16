@@ -3,26 +3,26 @@
         <ul class="nav" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <span>
+                        <img alt="image" class="img-circle" src="~/Content/Images/profile_small.jpg" />
+                    </span>
+                    <a class="dropdown-toggle">
                         <span class="clear">
                             <span class="block m-t-xs">
-                                <strong class="font-bold">Example user</strong>
-                            </span> <span class="text-muted text-xs block">Example menu <b class="caret"></b></span>
+                                <strong class="font-bold">Mary Iturriaga</strong>
+                            </span> <span class="text-muted text-xs block">Worker Programmer</span>
                         </span>
                     </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="#">Logout</a></li>
-                    </ul>
                 </div>
                 <div class="logo-element">
-                    IN+
+                    AR+
                 </div>
             </li>
-            <li class="@Html.IsSelected(action: "Index")">
-                <a href="@Url.Action("Index", "Home")"><i class="fa fa-laptop"></i> <span class="nav-label">Main page</span> </a>
+            <li class="@Html.IsSelected(action: "Index", controller:"Home")">
+                <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> <span class="nav-label">Home</span> </a>
             </li>
-            <li class="@Html.IsSelected(action: "Minor")">
-                <a href="@Url.Action("Minor", "Home")"><i class="fa fa-desktop"></i> <span class="nav-label">Minor page</span></a>
+            <li class="@Html.IsSelected(action: "Index", controller:"Aircraft")">
+                <a href="@Url.Action("Index", "Aircraft", new { pagina = 1 })"><i class="fa fa-plane"></i> <span class="nav-label">Aviones</span> </a>
             </li>
         </ul>
     </div>

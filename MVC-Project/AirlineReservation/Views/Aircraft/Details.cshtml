@@ -1,0 +1,63 @@
+﻿@model AirlineReservation.Models.Aircraft
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>Detalles</h2>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Detalles del Avión</h5>
+                </div>
+                <div class="ibox-content">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.ID)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Capacity)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Capacity)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Code)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Code)
+                        </dd>
+
+                    </dl>
+
+                    @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Volver a la Lista", "Index", new { pagina = 1 }, new { @class = "btn btn-white" })
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
