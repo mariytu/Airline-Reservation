@@ -301,10 +301,10 @@
     <Content Include="Views\Aircraft\Edit.cshtml" />
     <Content Include="Views\Aircraft\Create.cshtml" />
     <Content Include="Views\Aircraft\Delete.cshtml" />
+    <Content Include="Views\Passenger\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Passenger\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

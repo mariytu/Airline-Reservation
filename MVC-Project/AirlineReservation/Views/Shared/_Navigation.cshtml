@@ -21,8 +21,11 @@
             <li class="@Html.IsSelected(action: "Index", controller:"Home")">
                 <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> <span class="nav-label">Home</span> </a>
             </li>
-            <li class="@Html.IsSelected(action: "Index", controller:"Aircraft")">
+            <li class="@Html.IsSelected(controller:"Aircraft")">
                 <a href="@Url.Action("Index", "Aircraft", new { pagina = 1 })"><i class="fa fa-plane"></i> <span class="nav-label">Aviones</span> </a>
+            </li>
+            <li class="@Html.IsSelected(controller:"Passenger")">
+                <a href="@Url.Action("Index", "Passenger", new { pagina = 1 })"><i class="fa fa-users"></i> <span class="nav-label">Pasajeros</span> </a>
             </li>
         </ul>
     </div>
