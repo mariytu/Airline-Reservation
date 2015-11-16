@@ -89,14 +89,14 @@
                                     <select class="form-control" name="city">
                                         @{ foreach (var city in Model.CityTodos())
                                            {
-                                               if (city.ID == Model.CityID)
-                                               {
-                                                   <option value="@city.ID">@city.Name</option>
-                                               }
-                                               else
-                                               {
-                                                   <option value="@city.ID">@city.Name</option>
-                                               }
+                                             if (city.ID == Model.CityID)
+                                             {
+                                                 <option value="@city.ID" selected="selected">@city.Name</option>
+                                             }
+                                             else
+                                             {
+                                                 <option value="@city.ID">@city.Name</option>
+                                             }
                                            }
                                          }
                                     </select>
