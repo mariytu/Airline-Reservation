@@ -177,6 +177,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AircraftController.cs" />
+    <Compile Include="Controllers\FlightInstanceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PassengerController.cs" />
     <Compile Include="Global.asax.cs">
@@ -186,8 +187,10 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Aircraft.cs" />
     <Compile Include="Models\City.cs" />
+    <Compile Include="Models\FlightInstance.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Passenger.cs" />
+    <Compile Include="Models\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -307,6 +310,8 @@
     <Content Include="Views\Passenger\Edit.cshtml" />
     <Content Include="Views\Passenger\Create.cshtml" />
     <Content Include="Views\Passenger\Delete.cshtml" />
+    <Content Include="Views\FlightInstance\Index.cshtml" />
+    <Content Include="Views\FlightInstance\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

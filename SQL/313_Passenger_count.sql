@@ -1,6 +1,6 @@
-DROP FUNCTION IF EXISTS PassengerCount () $$
+DROP FUNCTION IF EXISTS Passenger_Count () $$
 
-CREATE OR REPLACE FUNCTION PassengerCount (flightInstanceID integer)
+CREATE OR REPLACE FUNCTION Passenger_Count (flightInstanceID integer)
 RETURNS integer AS
 $BODY$BEGIN
   	RETURN
