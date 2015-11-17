@@ -45,6 +45,15 @@ namespace AirlineReservation
             // Font Awesome icons
             bundles.Add(new StyleBundle("~/font-awesome/css").Include(
                       "~/fonts/font-awesome/css/font-awesome.min.css", new CssRewriteUrlTransform()));
+
+            // toastr notification 
+            bundles.Add(new ScriptBundle("~/plugins/toastr").Include(
+                      "~/Scripts/plugins/toastr/toastr.min.js"));
+
+            // toastr notification styles
+            bundles.Add(new StyleBundle("~/plugins/toastrStyles").Include(
+                      "~/Content/plugins/toastr/toastr.min.css"));
+
         }
     }
 }
