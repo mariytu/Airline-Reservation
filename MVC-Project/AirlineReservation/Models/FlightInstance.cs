@@ -215,12 +215,49 @@ namespace AirlineReservation.Models
         }
 
         /// <summary>
+        /// Selecciona una flight instance dado el id que se entrega como parametro 
+        /// (miturriaga)
+        /// </summary>
+        /// <param name="id">el id de la flight instance a seleccionar</param>
+        /// <returns>True si la flight instance fue encontrado, false en caso contrario</returns>
+        public bool Seleccionar(long id)
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
+
+                var comando = new NpgsqlCommand() { CommandText = "FlightInstance_Seleccionar", CommandType = CommandType.StoredProcedure };
+                comando.Parameters.Add(new NpgsqlParameter("inID", NpgsqlDbType.Integer));
+                comando.Parameters[0].Value = id;
+
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+                    comando.Connection = conn;
+                    NpgsqlDataReader ds = comando.ExecuteReader();
+
+                    if (ds.Read())
+                    {
+                        this.SetDesde(ds);
+                        conn.Close();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex) { }
+
+            return false;
+        }
+
+        /// <summary>
         /// Cuenta la cantidad de pasajeros en esta instancia de vuelo
         /// (miturriaga)
         /// </summary>
         /// <returns>La cantidad de pasajeros en esta instancia de vuelo</returns>
         public int PasajerosCount()
         {
+            int count = 0;
             try
             {
                 string connString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
@@ -235,19 +272,16 @@ namespace AirlineReservation.Models
                     comando.Connection = conn;
                     NpgsqlDataReader ds = comando.ExecuteReader();
 
-                    /*while (ds.Read())
+                    if (ds.Read())
                     {
-                        var flightInstance = new FlightInstance();
-                        flightInstance.SetDesde(ds);
-                        flightInstances.Add(flightInstance);
-                    }*/
+                        count = Convert.ToInt32(ds["passenger_count"]);
+                    }
                     conn.Close();
-                    return 1;
                 }
             }
             catch (Exception ex) { }
 
-            return 0;
+            return count;
         }
         #endregion
     }
