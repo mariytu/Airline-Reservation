@@ -43,9 +43,10 @@ namespace AirlineReservation.Models
         [StringLength(45)]
         public string EmailAddress { get; set; }
 
-        public long CityID { get; set; }
-
         [DisplayName("Ciudad")]
+        [Required(ErrorMessage = "El campo ciudad es requerido")]
+        public long CityID { get; set; }
+        
         public City City { get; set; }
         #endregion
 
@@ -259,6 +260,29 @@ namespace AirlineReservation.Models
         public List<City> CityTodos()
         {
             return City.Todos();
+        }
+
+        /// <summary>
+        /// Valida que todas las propiedades de este pasajero son correctas
+        /// </summary>
+        /// <returns>Un lista de strings vacia si todo es correcto, una lista con los errores encontrados en caso contrario</returns>
+        public List<string> Validar()
+        {
+            var validaciones = new List<string>();
+            if (string.IsNullOrEmpty(this.FirstName) || this.FirstName.Length > 30)
+                validaciones.Add("El campo nombre es requerido y puede contener un máximo de 30 caracteres.");
+            if (string.IsNullOrEmpty(this.SecondName) || this.SecondName.Length > 30)
+                validaciones.Add("El campo segundo nombre puede contener un máximo de 30 caracteres.");
+            if (string.IsNullOrEmpty(this.LastName) || this.LastName.Length > 30)
+                validaciones.Add("El campo apellido es requerido y pueden contener un máximo de 30 caracteres.");
+            if (string.IsNullOrEmpty(this.AddressLine) || this.AddressLine.Length > 40)
+                validaciones.Add("El campo dirección es requerido y pueden contener un máximo de 40 caracteres.");
+            if (string.IsNullOrEmpty(this.EmailAddress) || this.EmailAddress.Length > 45)
+                validaciones.Add("El campo correo es requerido y pueden contener un máximo de 45 caracteres.");
+            if (this.CityID == 0)
+                validaciones.Add("El campo ciudad es requerido.");
+
+            return validaciones;
         }
 
         /// <summary>

@@ -305,6 +305,8 @@
     <Content Include="Views\Passenger\Index.cshtml" />
     <Content Include="Views\Passenger\Details.cshtml" />
     <Content Include="Views\Passenger\Edit.cshtml" />
+    <Content Include="Views\Passenger\Create.cshtml" />
+    <Content Include="Views\Passenger\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

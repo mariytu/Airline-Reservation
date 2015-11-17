@@ -80,10 +80,12 @@ namespace AirlineReservation.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Models.Passenger passenger)
         {
-            if (ModelState.IsValid)
+            var validaciones = passenger.Validar();
+            if (!validaciones.Any())
             {
                 passenger.Modificar();
             }
+
             return RedirectToAction("Details", new { id = passenger.ID });
         }
 

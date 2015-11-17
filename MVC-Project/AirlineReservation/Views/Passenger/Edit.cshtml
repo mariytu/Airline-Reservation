@@ -86,20 +86,23 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.City, new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    <select class="form-control" name="city">
+                                    @Html.HiddenFor(model => model.CityID)
+                                    <!--id=CityID-->
+                                    <select class="form-control" name="city" id="city">
                                         @{ foreach (var city in Model.CityTodos())
-                                           {
+                                         {
                                              if (city.ID == Model.CityID)
                                              {
-                                                 <option value="@city.ID" selected="selected">@city.Name</option>
+                                                <option value="@city.ID" selected="selected">@city.Name</option>
                                              }
                                              else
                                              {
-                                                 <option value="@city.ID">@city.Name</option>
+                                                <option value="@city.ID">@city.Name</option>
                                              }
-                                           }
                                          }
+}
                                     </select>
+
                                     <!-- @Html.EditorFor(model => model.City.Name) -->
                                     <!-- @Html.ValidationMessageFor(model => model.City.Name) -->
                                 </div>
@@ -119,3 +122,15 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $('#city').on("change", function (e) {
+            var e = document.getElementById("city");
+            var strUser = e.options[e.selectedIndex].value;
+            var hiddenInput = document.getElementById("CityID");
+            hiddenInput.value = strUser;
+        });
+    </script>
+}
