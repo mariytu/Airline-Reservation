@@ -14,6 +14,13 @@ $BODY$ BEGIN
 
 	DELETE FROM "Aircraft" 
 	WHERE inID = "aircraftID";
+
+EXCEPTION
+
+WHEN SQLSTATE '23503' THEN  
+	RAISE EXCEPTION 'No se pudo borrar el  avion, ya que tiene vuelos asociados a el ';
+
+	
 	
 END;
 $BODY$ LANGUAGE 'plpgsql' VOLATILE
