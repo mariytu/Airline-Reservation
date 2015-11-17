@@ -51,7 +51,7 @@
                                     @Html.DisplayNameFor(model => model.AircraftID)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.PasajesVendidos)
+                                    Acciones
                                 </th>
                             </tr>
                         </thead>
@@ -62,7 +62,7 @@
                                 {
                                     <tr id="@item.ID">
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.State.Name)
+                                            @Html.DisplayFor(modelItem => item.State)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Cost)
@@ -83,10 +83,10 @@
                                             @Html.DisplayFor(modelItem => item.RealArrivalString)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Aircraft.Name)
+                                            @Html.DisplayFor(modelItem => item.AircraftID)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.PasajesVendidos)
+                                            @Html.ActionLink("Total Pasajeros", "PassengerCount", new { id = item.ID }, new { @class = "btn btn-outline btn-primary btn-xs" })
                                         </td>
                                     </tr>
                                 }

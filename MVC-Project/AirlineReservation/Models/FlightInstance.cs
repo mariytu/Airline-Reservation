@@ -20,7 +20,28 @@ namespace AirlineReservation.Models
         [DisplayName("Estado")]
         public long StateID { get; set; }
 
-        public State State { get; set; }
+        public string State
+        {
+            get
+            {
+                if (this.StateID == 1)
+                {
+                    return "In Flight";
+                }
+                else if (this.StateID == 2)
+                {
+                    return "Canceled";
+                }
+                else if (this.StateID == 3)
+                {
+                    return "Scheduled";
+                }
+                else
+                {
+                    return "Finished";
+                }
+            }
+        }
 
         [Required(ErrorMessage = "El campo costo es requerido")]
         [DisplayName("Costo")]
@@ -93,13 +114,8 @@ namespace AirlineReservation.Models
         }
 
         [Required(ErrorMessage = "El campo avión es requerido")]
-        [DisplayName("Avión")]
+        [DisplayName("Avión ID")]
         public long AircraftID { get; set; }
-        
-        public Aircraft Aircraft { get; set; }
-
-        [DisplayName("Pasajes Vendidos")]
-        public int PasajesVendidos { get; set; }
         #endregion
 
         #region [Metodos]
@@ -112,9 +128,6 @@ namespace AirlineReservation.Models
         {
             this.ID = Convert.ToInt64(dr["flightInstanceID"]);
             this.StateID = Convert.ToInt64(dr["state"]);
-
-            this.State = new State();
-            this.State.Seleccionar(this.StateID);
 
             this.Cost = Convert.ToInt32(dr["cost"]);
             this.FlightNumberID = Convert.ToInt64(dr["flightNumber"]);
@@ -156,11 +169,6 @@ namespace AirlineReservation.Models
             }
             
             this.AircraftID = Convert.ToInt64(dr["aircraftID"]);
-
-            this.Aircraft = new Aircraft();
-            this.Aircraft.Seleccionar(this.AircraftID);
-
-            this.PasajesVendidos = this.PasajerosCount();
         }
 
         /// <summary>
