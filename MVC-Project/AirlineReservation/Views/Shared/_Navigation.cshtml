@@ -27,6 +27,9 @@
             <li class="@Html.IsSelected(controller:"Passenger")">
                 <a href="@Url.Action("Index", "Passenger", new { pagina = 1 })"><i class="fa fa-users"></i> <span class="nav-label">Pasajeros</span> </a>
             </li>
+            <li class="@Html.IsSelected(controller:"FlightInstance")">
+                <a href="@Url.Action("Index", "FlightInstance", new { pagina = 1 })"><i class="fa fa-fighter-jet"></i> <span class="nav-label">Instancias de Vuelo</span> </a>
+            </li>
         </ul>
     </div>
 </nav>
