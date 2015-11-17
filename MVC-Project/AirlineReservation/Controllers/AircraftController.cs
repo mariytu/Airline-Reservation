@@ -14,6 +14,10 @@ namespace AirlineReservation.Controllers
         /// </summary>
         public ActionResult Index(int pagina)
         {
+            if (TempData["shortMessage"] != null)
+            {
+                @ViewBag.Message = TempData["shortMessage"].ToString();
+            }
             var aircrafts = new Models.Aircraft().Todos(10, pagina);
             return View(aircrafts);
         }
@@ -114,7 +118,8 @@ namespace AirlineReservation.Controllers
             var aircraft = new Models.Aircraft();
             if (aircraft.Seleccionar(id))
             {
-                aircraft.Eliminar();
+                String mensaje = aircraft.Eliminar();
+                TempData["shortMessage"] = mensaje;
             }
 
             return RedirectToAction("Index", new { pagina = 1 });

@@ -195,7 +195,7 @@ namespace AirlineReservation.Models
         /// Elimina este aircraft de la base de datos
         /// (miturriaga)
         /// </summary>
-        public void Eliminar()
+        public string Eliminar()
         {
             try
             {
@@ -213,7 +213,13 @@ namespace AirlineReservation.Models
                     conn.Close();
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                return ex.Message;
+
+            }
+            return "se ha borrado de manera exitosa";
+
         }
 
         /// <summary>
