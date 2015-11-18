@@ -232,7 +232,7 @@ namespace AirlineReservation.Models
         }
 
         /// <summary>
-        /// Realiza el check-in de esta reserva de vuelo
+        /// Realiza el check-in de esta reserva de vuelo como SP
         /// (miturriaga)
         /// </summary>
         public string CheckInSP()
@@ -252,6 +252,28 @@ namespace AirlineReservation.Models
                     NpgsqlDataReader ds = comando.ExecuteReader();
                     conn.Close();
                 }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+
+            }
+            return "Se ha realizado el check-in de forma exitosa =)";
+        }
+
+        /// <summary>
+        /// Realiza el check-in de esta reserva de vuelo como transaccion
+        /// (miturriaga)
+        /// </summary>
+        public string CheckInTrans()
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
+
+                //IMPLEMENTAR TODAS LAS CONSULTAS NECESARIAS Y VALIDACIONES CORRESPONDIENTES
+                //PARA REALIZAR UN CHECK-IN COMO UNA TRANSACCION!!!
+                //RETORNAR LOS MENSAJES DE ERROR CORRESPONDIENTES COMO STRING
             }
             catch (Exception ex)
             {

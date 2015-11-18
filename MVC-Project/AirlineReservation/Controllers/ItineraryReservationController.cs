@@ -45,16 +45,13 @@ namespace AirlineReservation.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckInTrans(long id)
         {
-            /*var flightInstance = new Models.FlightInstance();
-            if (flightInstance.Seleccionar(id))
+            var reservation = new Models.ItineraryReservation();
+
+            if (reservation.Seleccionar(id))
             {
-                int pasajeros = flightInstance.PasajerosCount();
-                string message = "La instancia de vuelo con ID (" + id + ") tiene " + pasajeros;
-
-                message = message + (pasajeros == 1 ? " pasaje vendido." : " pasajes vendidos.");
-
-                TempData["shortMessage"] = message;
-            }*/
+                String mensaje = reservation.CheckInTrans();
+                TempData["shortMessage"] = mensaje;
+            }
 
             return RedirectToAction("PassengerReservations", new { id = 1 });
         }
