@@ -21,7 +21,8 @@ $BODY$BEGIN
 				LEFT JOIN "Payment" ON "Payment"."paymentID" = "ItineraryReservation"."paymentID"
 				WHERE   "ItineraryReservation"."reservationID" = inID
 			) > 0 THEN
-		    	RAISE 'Check-in realizado exitosamente';
+				UPDATE "ItineraryReservation" SET "reservationState" = 2 WHERE "ItineraryReservation"."reservationID" = inID;
+		    	--RAISE 'Check-in realizado exitosamente';
 			ELSE
 				RAISE 'No se pudo realizar Check-in, no ha pagado su Itinerary Reservation';
 			END IF;

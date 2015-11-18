@@ -6,9 +6,8 @@ $BODY$BEGIN
   	RETURN
   	(
 		SELECT COUNT(*)
-		FROM "FlightReservation", "FlightInstance"
-		WHERE "FlightReservation"."flightInstanceID" = flightInstanceID AND 
-		"FlightReservation"."flightInstanceID" = "FlightInstance"."flightInstanceID"
+		FROM "FlightReservation"
+		WHERE "FlightReservation"."flightInstanceID" = flightInstanceID
 	);
 END;
 $BODY$ LANGUAGE 'plpgsql' VOLATILE
