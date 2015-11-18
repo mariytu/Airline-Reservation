@@ -120,5 +120,10 @@ namespace AirlineReservation.Controllers
 
             return RedirectToAction("Index", new { pagina = 1 });
         }
+
+        public ActionResult ItineraryReservations(long id)
+        {
+            return RedirectToAction("PassengerReservations", "ItineraryReservation", new { id = id });
+        }
     }
 }

@@ -17,8 +17,7 @@
                 <div class="ibox-title tooltip-demo">
                     &nbsp;
                     <a class="btn btn-default btn-options btn-sm btn-outline" data-toggle="tooltip" data-placement="top" title="Refrescar" href="@Url.Action("Index", "Passenger", new { pagina = 1 })"><i class="fa fa-refresh"></i> Refrescar</a>
-                    &nbsp;&nbsp;
-                    <a class="btn btn-default btn-options btn-outline" data-toggle="tooltip" data-placement="top" title="Crear" href="@Url.Action("Create", "Passenger")"><i class="fa fa-plus"></i> Crear</a>
+                    &nbsp;
                     <div class="ibox-tools">
                     </div>
                 </div>
@@ -74,9 +73,8 @@
                                             @Html.DisplayFor(modelItem => item.City.Name)
                                         </td>
                                         <td>
-                                            @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-outline btn-primary btn-xs" })
-                                            @Html.ActionLink("Editar", "Edit", new { id = item.ID }, new { @class = "btn btn-outline btn-info btn-xs" })
-                                            @Html.ActionLink("Eliminar", "Delete", new { id = item.ID }, new { @class = "btn btn-outline btn-danger btn-xs" })
+                                            @Html.ActionLink("Reservas", "ItineraryReservations", new { id = item.ID }, new { @class = "btn btn-outline btn-primary btn-xs" })
+                                            @Html.ActionLink("Editar", "Edit", new { id = item.ID }, new { @class = "btn btn-outline btn-warning btn-xs" })
                                         </td>
                                     </tr>
                                 }

@@ -30,6 +30,9 @@
             <li class="@Html.IsSelected(controller:"FlightInstance")">
                 <a href="@Url.Action("Index", "FlightInstance", new { pagina = 1 })"><i class="fa fa-fighter-jet"></i> <span class="nav-label">Instancias de Vuelo</span> </a>
             </li>
+            <li class="@Html.IsSelected(controller:"ItineraryReservation")">
+                <a href="@Url.Action("PassengerReservations", "ItineraryReservation", new { id = 1 })"><i class="fa fa-calendar"></i> <span class="nav-label">Reservas de Pasajeros</span> </a>
+            </li>
         </ul>
     </div>
 </nav>

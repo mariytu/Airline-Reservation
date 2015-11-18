@@ -1,12 +1,12 @@
-﻿@model IEnumerable<AirlineReservation.Models.FlightInstance>
+﻿@model IEnumerable<AirlineReservation.Models.ItineraryReservation>
 @{
-    ViewBag.Title = "Instancias de Vuelo";
+    ViewBag.Title = "Reservas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>Instancias de Vuelo</h2>
+        <h2>Reservas de Vuelo</h2>
         @if (ViewBag.Message != null)
         {
             <input type="hidden" id="error" value="@ViewBag.Message">
@@ -20,41 +20,35 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title tooltip-demo">
                     &nbsp;
-                    <a class="btn btn-default btn-options btn-sm btn-outline" data-toggle="tooltip" data-placement="top" title="Refrescar" href="@Url.Action("Index", "FlightInstance", new { pagina = 1 })"><i class="fa fa-refresh"></i> Refrescar</a>
+                    <a class="btn btn-default btn-options btn-sm btn-outline" data-toggle="tooltip" data-placement="top" title="Refrescar" href="@Url.Action("Index", "Passenger", new { pagina = 1 })"><i class="fa fa-refresh"></i> Refrescar</a>
                     &nbsp;
                     <div class="ibox-tools">
                     </div>
                 </div>
                 <div class="ibox-content table-responsive">
-                    <table class="table table-striped table-bordered table-hover" id="flightInstances">
+                    <table class="table table-striped table-bordered table-hover" id="itineraryReservations">
                         <thead>
                             <tr>
                                 <th>
                                     @Html.DisplayNameFor(model => model.ID)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.StateID)
+                                    @Html.DisplayNameFor(model => model.DateReservationMade)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Cost)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.FlightNumberID)
+                                    @Html.DisplayNameFor(model => model.ReservationStateID)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.EstimatedDeparture)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.EstimatedArrival)
+                                    @Html.DisplayNameFor(model => model.PaymentID)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.RealDeparture)
+                                    @Html.DisplayNameFor(model => model.PaymentDate)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.RealArrival)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.AircraftID)
+                                    @Html.DisplayNameFor(model => model.PaymentAmount)
                                 </th>
                                 <th>
                                     Acciones
@@ -71,33 +65,31 @@
                                             @Html.DisplayFor(modelItem => item.ID)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.State)
+                                            @Html.DisplayFor(modelItem => item.DateReservationMadeString)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Cost)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.FlightNumberID)
+                                            @Html.DisplayFor(modelItem => item.ReservationState)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.EstimatedDepartureString)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.EstimatedArrivalString)
+                                            @Html.DisplayFor(modelItem => item.Payment)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.RealDepartureString)
+                                            @Html.DisplayFor(modelItem => item.PaymentDate)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.RealArrivalString)
+                                            @Html.DisplayFor(modelItem => item.PaymentAmount)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.AircraftID)
-                                        </td>
-                                        <td>
-                                            <form method="post" action="/FlightInstance/PassengerCount/@item.ID">
+                                            <form method="post" action="/ItineraryReservation/CheckInSP/@item.ID">
                                                 @Html.AntiForgeryToken()
-                                                <input type="submit" value="Total Pasajeros" class="btn btn-outline btn-primary btn-xs" />
+                                                <input type="submit" value="Check-in SP" class="btn btn-outline btn-primary btn-xs" />
+                                            </form>
+                                            <form method="post" action="/ItineraryReservation/CheckInTrans/@item.ID">
+                                                @Html.AntiForgeryToken()
+                                                <input type="submit" value="Check-in Trans" class="btn btn-outline btn-warning btn-xs" />
                                             </form>
                                         </td>
                                     </tr>
@@ -119,7 +111,6 @@
     @Scripts.Render("~/plugins/toastr")
 
     <script type="text/javascript">
-
         $(document).ready(function () {
             var mensaje = document.getElementById("error");
             if (mensaje != null) {

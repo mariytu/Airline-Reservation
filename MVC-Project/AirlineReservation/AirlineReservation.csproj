@@ -179,6 +179,7 @@
     <Compile Include="Controllers\AircraftController.cs" />
     <Compile Include="Controllers\FlightInstanceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ItineraryReservationController.cs" />
     <Compile Include="Controllers\PassengerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -189,6 +190,7 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\FlightInstance.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ItineraryReservation.cs" />
     <Compile Include="Models\Passenger.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -312,6 +314,7 @@
     <Content Include="Views\Passenger\Delete.cshtml" />
     <Content Include="Views\FlightInstance\Index.cshtml" />
     <Content Include="Views\FlightInstance\Create.cshtml" />
+    <Content Include="Views\ItineraryReservation\PassengerReservations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
