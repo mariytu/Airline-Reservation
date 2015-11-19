@@ -72,6 +72,40 @@ namespace AirlineReservation.Models
 
             return passengers;
         }
+
+        public List<Agent> AgenciasTodos()
+        {
+
+            var agents = new List<Agent>();
+
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
+
+                var comando = new NpgsqlCommand()
+                {
+                    CommandText = "SELECT * FROM \"BookingAgent\""
+                };
+
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+                    comando.Connection = conn;
+                    NpgsqlDataReader ds = comando.ExecuteReader();
+
+                    while (ds.Read())
+                    {
+                        var agent = new Agent();
+                        agent.SetDesde(ds);
+                        agents.Add(agent);
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex) { }
+
+            return agents;
+        }
         #endregion
     }
 }
