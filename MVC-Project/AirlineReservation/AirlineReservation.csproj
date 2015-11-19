@@ -181,6 +181,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItineraryReservationController.cs" />
     <Compile Include="Controllers\PassengerController.cs" />
+    <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -316,6 +317,7 @@
     <Content Include="Views\FlightInstance\Create.cshtml" />
     <Content Include="Views\ItineraryReservation\PassengerReservations.cshtml" />
     <Content Include="Views\FlightInstance\ChangeAirplane.cshtml" />
+    <Content Include="Views\Reservation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
