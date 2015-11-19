@@ -283,6 +283,123 @@ namespace AirlineReservation.Models
 
             return count;
         }
+
+        public List<Aircraft> AircraftTodos()
+        {
+            return Aircraft.Todos();
+        }
+
+        /// <summary>
+        /// Realiza el check-in de esta reserva de vuelo como transaccion
+        /// (miturriaga)
+        /// </summary>
+        public string ChangeAirplane()
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
+
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+                    NpgsqlTransaction t = conn.BeginTransaction();
+
+                    try
+                    {
+                        var comando = new NpgsqlCommand()
+                        {
+                            CommandText = "select \"aircraftCapacity\" from \"Aircraft\" where \"aircraftID\" = :airplaneID"
+                        };
+
+                        comando.Parameters.Add(new NpgsqlParameter("airplaneID", NpgsqlDbType.Integer));
+                        comando.Parameters[0].Value = this.AircraftID;
+                        comando.Connection = conn;
+                        comando.Transaction = t;
+
+                        int newCapacity = (int)comando.ExecuteScalar();
+
+                        comando = new NpgsqlCommand()
+                        {
+                            CommandText = "select \"Aircraft\".\"aircraftCapacity\" from \"Aircraft\",\"FlightInstance\" " +
+                                          "where \"FlightInstance\".\"flightInstanceID\" = :id AND " +
+                                          "\"Aircraft\".\"aircraftID\" = \"FlightInstance\".\"aircraftID\""
+                        };
+
+                        comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                        comando.Parameters[0].Value = this.ID;
+                        comando.Connection = conn;
+                        comando.Transaction = t;
+
+                        int oldCapacity = (int)comando.ExecuteScalar();
+                        int diff = 0;
+
+                        if (newCapacity < oldCapacity) //Hay que verificar la cantidad de pasajeros
+                        {
+                            comando = new NpgsqlCommand()
+                            {
+                                CommandText = "select count(*) from \"FlightReservation\" " +
+                                              "where \"FlightReservation\".\"flightInstanceID\" = :id"
+                            };
+
+                            comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                            comando.Parameters[0].Value = this.ID;
+                            comando.Connection = conn;
+                            comando.Transaction = t;
+
+                            int pasajeros = (int)comando.ExecuteScalar();
+
+                            if (pasajeros > newCapacity) //Hay que cancelar algunas reservas!!!
+                            {
+                                diff = newCapacity - pasajeros;
+
+                                comando = new NpgsqlCommand()
+                                {
+                                    CommandText = "FlightInstance_CancelReservations",
+                                    CommandType = CommandType.StoredProcedure
+                                };
+                                comando.Parameters.Add(new NpgsqlParameter("inID", NpgsqlDbType.Integer));
+                                comando.Parameters[0].Value = this.ID;
+                                comando.Parameters.Add(new NpgsqlParameter("inTotal", NpgsqlDbType.Integer));
+                                comando.Parameters[1].Value = diff;
+                                comando.Connection = conn;
+                                comando.Transaction = t;
+
+                                comando.ExecuteScalar();
+                            }
+                        }
+
+                        //Listos ahora actualizar el aircraftID en la tabla
+                        comando = new NpgsqlCommand()
+                        {
+                            CommandText = "update \"FlightInstance\" " +
+                                          "set \"aircraftID\" = :airplaneID " +
+                                          "where \"FlightInstance\".\"flightInstanceID\" = :id"
+                        };
+                        comando.Parameters.Add(new NpgsqlParameter("airplaneID", NpgsqlDbType.Integer));
+                        comando.Parameters[0].Value = this.AircraftID;
+                        comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                        comando.Parameters[1].Value = this.ID;
+                        comando.Connection = conn;
+                        comando.Transaction = t;
+
+                        comando.ExecuteNonQuery();
+
+                        t.Commit();
+                        conn.Close();
+                        return "Se ha cambiado el avión, y se han cancelado " + diff + " reservas.";
+                    }
+                    catch (Exception ex)
+                    {
+                        t.Rollback();
+                        return ex.Message;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
         #endregion
     }
 }

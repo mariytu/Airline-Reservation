@@ -315,6 +315,7 @@
     <Content Include="Views\FlightInstance\Index.cshtml" />
     <Content Include="Views\FlightInstance\Create.cshtml" />
     <Content Include="Views\ItineraryReservation\PassengerReservations.cshtml" />
+    <Content Include="Views\FlightInstance\ChangeAirplane.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

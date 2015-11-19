@@ -223,6 +223,42 @@ namespace AirlineReservation.Models
         }
 
         /// <summary>
+        /// Selecciona todos los aircraft
+        /// (miturriaga)
+        /// </summary>
+        /// <returns>La lista de aircraft</returns>
+        public static List<Aircraft> Todos()
+        {
+
+            var aircrafts = new List<Aircraft>();
+
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
+
+                var comando = new NpgsqlCommand() { CommandText = "Aircraft_All", CommandType = CommandType.StoredProcedure };
+
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+                    comando.Connection = conn;
+                    NpgsqlDataReader ds = comando.ExecuteReader();
+
+                    while (ds.Read())
+                    {
+                        var aircraft = new Aircraft();
+                        aircraft.SetDesde(ds);
+                        aircrafts.Add(aircraft);
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex) { }
+
+            return aircrafts;
+        }
+
+        /// <summary>
         /// Retorna un string que representa brevemente esta entidad
         /// (miturriaga)
         /// </summary>

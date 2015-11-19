@@ -99,6 +99,7 @@
                                                 @Html.AntiForgeryToken()
                                                 <input type="submit" value="Total Pasajeros" class="btn btn-outline btn-primary btn-xs" />
                                             </form>
+                                            @Html.ActionLink("Cambiar avión", "ChangeAirplane", new { id = item.ID }, new { @class = "btn btn-outline btn-warning btn-xs" })
                                         </td>
                                     </tr>
                                 }

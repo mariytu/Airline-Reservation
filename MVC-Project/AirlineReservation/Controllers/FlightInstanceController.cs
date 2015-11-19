@@ -49,5 +49,41 @@ namespace AirlineReservation.Controllers
 
             return RedirectToAction("Index", new { pagina = 1 });
         }
+
+        /// <summary>
+        /// GET /FlightInstance/ChangeAirplane
+        /// </summary>
+        public ActionResult ChangeAirplane(long id)
+        {
+            if (TempData["shortMessage"] != null)
+            {
+                @ViewBag.Message = TempData["shortMessage"].ToString();
+            }
+
+            var flightInstance = new Models.FlightInstance();
+            if (flightInstance.Seleccionar(id))
+            {
+                return View(flightInstance);
+            }
+            else
+            {
+                return HttpNotFound();
+            }
+        }
+
+        /// <summary>
+        /// POST /FlightInstance/ChangeAirplane/5
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeAirplane(Models.FlightInstance flightInstance)
+        {
+
+            string mensaje = flightInstance.ChangeAirplane();
+
+            TempData["shortMessage"] = mensaje;
+
+            return RedirectToAction("ChangeAirplane", new { id = flightInstance.ID });
+        }
     }
 }
