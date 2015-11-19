@@ -418,10 +418,113 @@ namespace AirlineReservation.Models
 
                     try
                     {
+                        var comando = new NpgsqlCommand()
+                        {
+                            CommandText = "select \"FlightState\".\"stateName\" from \"FlightState\", \"FlightInstance\" " + 
+                                          "where \"FlightInstance\".\"flightInstanceID\" = :id AND " + 
+                                          "\"FlightInstance\".\"state\" = \"FlightState\".\"flightStateID\""
+                        };
+
+                        comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                        comando.Parameters[0].Value = this.ID;
+                        comando.Connection = conn;
+                        comando.Transaction = t;
+
+                        string estado = (string)comando.ExecuteScalar();
+                        string mensaje = "";
+
+                        if (estado.Equals("Scheduled"))
+                        {
+                            comando = new NpgsqlCommand()
+                            {
+                                CommandText = "SELECT * FROM \"FlightReservation\" WHERE \"flightInstanceID\" = :id"
+                            };
+                            comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                            comando.Parameters[0].Value = this.ID;
+                            comando.Connection = conn;
+                            comando.Transaction = t;
+
+                            List<String> identificadores = new List<string>();
+                            NpgsqlDataReader reader = comando.ExecuteReader();
+
+                            while (reader.Read())
+                            {
+                                string IDReservacion = reader.GetString(reader.GetOrdinal("reservationID"));
+                                identificadores.Add(IDReservacion);
+                            }
+
+                            reader.Close();
+
+                            foreach (string iD in identificadores)
+                            {
+                                comando = new NpgsqlCommand()
+                                {
+                                    CommandText = "SELECT \"paymentID\" FROM \"ItineraryReservation\" WHERE \"reservationID\" = :id"
+                                };
+                                comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                                comando.Parameters[0].Value = iD;
+                                comando.Connection = conn;
+                                comando.Transaction = t;
+
+                                long paymentID = (long)comando.ExecuteScalar();
+
+                                comando = new NpgsqlCommand()
+                                {
+                                    CommandText = "UPDATE \"Payment\" SET \"paymentAmount\" = 0 WHERE \"paymentID\" = :paymentID"
+                                };
+                                comando.Parameters.Add(new NpgsqlParameter("paymentID", NpgsqlDbType.Integer));
+                                comando.Parameters[0].Value = paymentID;
+                                comando.Connection = conn;
+                                comando.Transaction = t;
+                                comando.ExecuteNonQuery();
+
+                                comando = new NpgsqlCommand()
+                                {
+                                    CommandText = "UPDATE \"ItineraryReservation\" SET \"reservationState\" = 4 WHERE \"reservationID\" = :id"
+                                };
+                                comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                                comando.Parameters[0].Value = iD;
+                                comando.Connection = conn;
+                                comando.Transaction = t;
+                                comando.ExecuteNonQuery();
+
+                                comando = new NpgsqlCommand()
+                                {
+                                    CommandText = "DELETE FROM \"FlightReservation\" WHERE :id = \"reservationID\" AND \"flightInstanceID\" = :inID"
+                                };
+                                comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                                comando.Parameters[0].Value = iD;
+                                comando.Parameters.Add(new NpgsqlParameter("inID", NpgsqlDbType.Integer));
+                                comando.Parameters[1].Value = this.ID;
+                                comando.Connection = conn;
+                                comando.Transaction = t;
+                                comando.ExecuteNonQuery();
+                            }
+
+                            //Listo... cambiar el estado de la instancia de vuelo a cancelado
+                            comando = new NpgsqlCommand()
+                            {
+                                CommandText = "update \"FlightInstance\" " +
+                                              "set \"state\" = 2 " +
+                                              "where \"FlightInstance\".\"flightInstanceID\" = :id"
+                            };
+                            comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                            comando.Parameters[0].Value = this.ID;
+                            comando.Connection = conn;
+                            comando.Transaction = t;
+
+                            comando.ExecuteNonQuery();
+
+                            mensaje = "La instancia fue cancelada exitosamente =)";
+                        }
+                        else
+                        {
+                            mensaje = "La instancia de vuelo no puede ser cancelada.";
+                        }
                         
                         t.Commit();
                         conn.Close();
-                        return "";
+                        return mensaje;
                     }
                     catch (Exception ex)
                     {
