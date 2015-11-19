@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 
+
 namespace AirlineReservation.Models
 {
     public class ItineraryReservation
@@ -274,7 +275,55 @@ namespace AirlineReservation.Models
                 //IMPLEMENTAR TODAS LAS CONSULTAS NECESARIAS Y VALIDACIONES CORRESPONDIENTES
                 //PARA REALIZAR UN CHECK-IN COMO UNA TRANSACCION!!!
                 //RETORNAR LOS MENSAJES DE ERROR CORRESPONDIENTES COMO STRING
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+                    NpgsqlTransaction t = conn.BeginTransaction();
+
+                    var comando = new NpgsqlCommand()
+                    {
+                        CommandText = "SELECT COUNT(*) FROM \"ItineraryReservation\" LEFT JOIN \"ReservationState\" ON \"ReservationState\".\"reservationID\" = \"ItineraryReservation\".\"reservationState\" " +
+                                      "WHERE \"ItineraryReservation\".\"reservationID\" = :id AND \"ReservationState\".\"reservationName\" = 'Reserved'"
+                    };
+                    comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                    comando.Parameters[0].Value = this.ID;
+                    comando.Connection = conn;
+                    comando.Transaction = t;
+
+                    int algo = (int)comando.ExecuteScalar();
+               
+                    
+                   if(algo > 0){
+
+                       comando = new NpgsqlCommand()
+                       {
+                           CommandText = "SELECT  \"Payment\".\"paymentAmount\" FROM \"ItineraryReservation\" LEFT JOIN \"Payment\" ON \"Payment\".\"paymentID\" = \"ItineraryReservation\".\"paymentID\" WHERE   \"ItineraryReservation\".\"reservationID\" ="+this.ID+""
+
+                       };
+                       comando.Connection = conn;
+                       comando.Transaction = t;
+
+                       int monto = (int)comando.ExecuteScalar();
+
+
+
+
+                   }
+                   else
+                   {
+                       //retirno que no se ha encontrado la reservacion 
+                   }
+
+
+
+
+
+
+
+
+                }
             }
+               
             catch (Exception ex)
             {
                 return ex.Message;
