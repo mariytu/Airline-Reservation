@@ -378,6 +378,27 @@ namespace AirlineReservation.Models
                                 {
                                     comando = new NpgsqlCommand()
                                     {
+                                        CommandText = "SELECT \"paymentID\" FROM \"ItineraryReservation\" WHERE \"reservationID\" = :id"
+                                    };
+                                    comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                                    comando.Parameters[0].Value = iD;
+                                    comando.Connection = conn;
+                                    comando.Transaction = t;
+
+                                    long paymentID = (long)comando.ExecuteScalar();
+
+                                    comando = new NpgsqlCommand()
+                                    {
+                                        CommandText = "UPDATE \"Payment\" SET \"paymentAmount\" = 0 WHERE \"paymentID\" = :paymentID"
+                                    };
+                                    comando.Parameters.Add(new NpgsqlParameter("paymentID", NpgsqlDbType.Integer));
+                                    comando.Parameters[0].Value = paymentID;
+                                    comando.Connection = conn;
+                                    comando.Transaction = t;
+                                    comando.ExecuteNonQuery();
+
+                                    comando = new NpgsqlCommand()
+                                    {
                                         CommandText = "DELETE FROM \"FlightReservation\" WHERE :id = \"reservationID\" AND \"flightInstanceID\" = :inID"
                                     };
                                     comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
@@ -386,7 +407,6 @@ namespace AirlineReservation.Models
                                     comando.Parameters[1].Value = this.ID;
                                     comando.Connection = conn;
                                     comando.Transaction = t;
-
                                     comando.ExecuteNonQuery();
 
                                     comando = new NpgsqlCommand()
@@ -397,7 +417,6 @@ namespace AirlineReservation.Models
                                     comando.Parameters[0].Value = iD;
                                     comando.Connection = conn;
                                     comando.Transaction = t;
-
                                     comando.ExecuteNonQuery();
                                 }
                             }
@@ -416,7 +435,6 @@ namespace AirlineReservation.Models
                         comando.Parameters[1].Value = this.ID;
                         comando.Connection = conn;
                         comando.Transaction = t;
-
                         comando.ExecuteNonQuery();
 
                         t.Commit();
