@@ -193,6 +193,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ItineraryReservation.cs" />
     <Compile Include="Models\Passenger.cs" />
+    <Compile Include="Models\Reservacion.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
