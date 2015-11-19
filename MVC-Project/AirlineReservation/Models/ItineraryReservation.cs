@@ -323,7 +323,15 @@ namespace AirlineReservation.Models
                             comando.ExecuteNonQuery();
 
                         }
+                        else
+                        {
+                            return "El usuario no puede realizar check-in, no se ha pagado el total del pasaje";
+                        }
 
+                    }
+                    else
+                    {
+                        return "El itinerario ya realizo check-in";
                     }
                     t.Commit();
                     conn.Close();
