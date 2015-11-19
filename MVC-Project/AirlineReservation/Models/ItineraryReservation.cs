@@ -335,6 +335,7 @@ namespace AirlineReservation.Models
                
             catch (Exception ex)
             {
+                
                 return ex.Message;
             }
             return "Se ha realizado el check-in de forma exitosa =)";
@@ -354,10 +355,78 @@ namespace AirlineReservation.Models
                 {
                     conn.Open();
                     NpgsqlTransaction t = conn.BeginTransaction();
+
+                    var comando = new NpgsqlCommand()
+                    {
+                        CommandText = "SELECT COUNT(*) FROM \"ItineraryReservation\" LEFT JOIN \"ReservationState\" ON \"ReservationState\".\"reservationID\" = \"ItineraryReservation\".\"reservationState\" WHERE   \"ItineraryReservation\".\"reservationID\" = :id AND	\"ReservationState\".\"reservationName\" = 'Reserved';"
+                    };
+                    comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                    comando.Parameters[0].Value = this.ID;
+                    comando.Connection = conn;
+                    comando.Transaction = t;
+
+                    var resultado = comando.ExecuteScalar();
+
+                    int resultado2 = Convert.ToInt32(resultado);
+                    if(resultado2 > 0 ){ //significa que esta en estado reservado
+
+                        comando = new NpgsqlCommand()
+                        {
+                            CommandText = "SELECT * FROM \"ItineraryReservation\" LEFT JOIN \"ReservationState\" ON \"ReservationState\".\"reservationID\" = \"ItineraryReservation\".\"reservationState\" WHERE   \"ItineraryReservation\".\"reservationID\" = :id AND	\"ReservationState\".\"reservationName\" = 'Reserved';"
+                        };
+                        comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                        comando.Parameters[0].Value = this.ID;
+                        comando.Connection = conn;
+                        comando.Transaction = t;
+
+                        List<String> identificadores = new List<string>() ;
+
+                        using (var reader = comando.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                //ahora debo eliminar la reserva asociado con los vuelos correspondientes 
+
+                                string IDReservacion = reader.GetString(reader.GetOrdinal("reservationID"));
+                                identificadores.Add(IDReservacion);
+
+                            }
+                        }
+
+                        foreach (string iD in identificadores){
+                             comando = new NpgsqlCommand()
+                            {
+                                CommandText = "DELETE FROM \"FlightReservation\"  WHERE \"FlightReservation\".\"reservationID\"= :id"
+                            };
+                            comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                            comando.Parameters[0].Value = iD;
+                            comando.Connection = conn;
+                            comando.Transaction = t;
+                            comando.ExecuteNonQuery();
+
+
+                            comando = new NpgsqlCommand()
+                            {
+                                CommandText = "UPDATE \"ItineraryReservation\" SET \"reservationState\" = 4 WHERE \"ItineraryReservation\".\"reservationID\" = :inID;"
+                            };
+                            comando.Parameters.Add(new NpgsqlParameter("inID", NpgsqlDbType.Integer));
+                            comando.Parameters[0].Value = iD;
+                            comando.Connection = conn;
+                            comando.Transaction = t;
+                            comando.ExecuteNonQuery();
+
+                            
+                        }
+
+                    }
+                    else
+                    {
+                        return "No se puede cancelar un itinerario si no esta en estado reservado";
+                    }
                     
                     t.Commit();
                     conn.Close();
-                    return "";
+                    return "Itinerario cancelado exitosamente ";
                 }
             }
 
