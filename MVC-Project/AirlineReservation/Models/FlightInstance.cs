@@ -354,8 +354,7 @@ namespace AirlineReservation.Models
 
                                 comando = new NpgsqlCommand()
                                 {
-                                    CommandText = "FlightInstance_CancelReservations",
-                                    CommandType = CommandType.StoredProcedure
+                                    CommandText = "SELECT * FROM \"FlightReservation\" WHERE \"flightInstanceID\" = :inID LIMIT :inTotal"
                                 };
                                 comando.Parameters.Add(new NpgsqlParameter("inID", NpgsqlDbType.Integer));
                                 comando.Parameters[0].Value = this.ID;
@@ -364,7 +363,43 @@ namespace AirlineReservation.Models
                                 comando.Connection = conn;
                                 comando.Transaction = t;
 
-                                comando.ExecuteScalar();
+                                List<String> identificadores = new List<string>();
+                                NpgsqlDataReader reader = comando.ExecuteReader();
+
+                                while (reader.Read())
+                                {
+                                    string IDReservacion = reader.GetString(reader.GetOrdinal("reservationID"));
+                                    identificadores.Add(IDReservacion);
+                                }
+
+                                reader.Close();
+
+                                foreach (string iD in identificadores)
+                                {
+                                    comando = new NpgsqlCommand()
+                                    {
+                                        CommandText = "DELETE FROM \"FlightReservation\" WHERE :id = \"reservationID\" AND \"flightInstanceID\" = :inID"
+                                    };
+                                    comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                                    comando.Parameters[0].Value = iD;
+                                    comando.Parameters.Add(new NpgsqlParameter("inID", NpgsqlDbType.Integer));
+                                    comando.Parameters[1].Value = this.ID;
+                                    comando.Connection = conn;
+                                    comando.Transaction = t;
+
+                                    comando.ExecuteNonQuery();
+
+                                    comando = new NpgsqlCommand()
+                                    {
+                                        CommandText = "UPDATE \"ItineraryReservation\" SET \"reservationState\" = 4 WHERE \"reservationID\" = :id"
+                                    };
+                                    comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                                    comando.Parameters[0].Value = iD;
+                                    comando.Connection = conn;
+                                    comando.Transaction = t;
+
+                                    comando.ExecuteNonQuery();
+                                }
                             }
                         }
 
