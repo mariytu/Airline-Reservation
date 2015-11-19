@@ -320,6 +320,7 @@
     <Content Include="Views\ItineraryReservation\PassengerReservations.cshtml" />
     <Content Include="Views\FlightInstance\ChangeAirplane.cshtml" />
     <Content Include="Views\Reservation\Index.cshtml" />
+    <Content Include="Views\Reservation\BuscarVuelos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

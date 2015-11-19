@@ -30,11 +30,15 @@ namespace AirlineReservation.Models
         [DisplayName("Pasajero")]
         public long PasajeroID { get; set; }
 
+        [Required(ErrorMessage = "El campo pasajero es requerido")]
+        [DisplayName("Pasajero")]
+        public DateTime fecha { get; set; }
+
         #endregion
 
         #region [Metodos]
 
-        public static List<Aircraft> AeropuertosTodos()
+        public  List<Aircraft> AeropuertosTodos()
         {
             return Aircraft.Todos();
         }
