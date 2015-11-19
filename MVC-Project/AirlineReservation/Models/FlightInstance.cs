@@ -331,7 +331,7 @@ namespace AirlineReservation.Models
                         comando.Transaction = t;
 
                         int oldCapacity = (int)comando.ExecuteScalar();
-                        int diff = 0;
+                        long diff = 0;
 
                         if (newCapacity < oldCapacity) //Hay que verificar la cantidad de pasajeros
                         {
@@ -346,7 +346,7 @@ namespace AirlineReservation.Models
                             comando.Connection = conn;
                             comando.Transaction = t;
 
-                            int pasajeros = (int)comando.ExecuteScalar();
+                            long pasajeros = Convert.ToInt64(comando.ExecuteScalar());
 
                             if (pasajeros > newCapacity) //Hay que cancelar algunas reservas!!!
                             {
