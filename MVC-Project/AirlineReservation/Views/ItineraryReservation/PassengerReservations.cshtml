@@ -91,6 +91,10 @@
                                                 @Html.AntiForgeryToken()
                                                 <input type="submit" value="Check-in Trans" class="btn btn-outline btn-warning btn-xs" />
                                             </form>
+                                            <form method="post" action="/ItineraryReservation/CancelReservation/@item.ID">
+                                                @Html.AntiForgeryToken()
+                                                <input type="submit" value="Cancelar" class="btn btn-outline btn-danger btn-xs" />
+                                            </form>
                                         </td>
                                     </tr>
                                 }

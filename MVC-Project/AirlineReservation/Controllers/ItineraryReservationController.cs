@@ -55,5 +55,23 @@ namespace AirlineReservation.Controllers
 
             return RedirectToAction("PassengerReservations", new { id = 1 });
         }
+
+        /// <summary>
+        /// POST /ItineraryReservation/CancelReservation/5
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CancelReservation(long id)
+        {
+            var reservation = new Models.ItineraryReservation();
+
+            if (reservation.Seleccionar(id))
+            {
+                String mensaje = reservation.CancelReservation();
+                TempData["shortMessage"] = mensaje;
+            }
+
+            return RedirectToAction("PassengerReservations", new { id = 1 });
+        }
     }
 }

@@ -276,9 +276,6 @@ namespace AirlineReservation.Models
             {
                 string connString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
 
-                //IMPLEMENTAR TODAS LAS CONSULTAS NECESARIAS Y VALIDACIONES CORRESPONDIENTES
-                //PARA REALIZAR UN CHECK-IN COMO UNA TRANSACCION!!!
-                //RETORNAR LOS MENSAJES DE ERROR CORRESPONDIENTES COMO STRING
                 using (var conn = new NpgsqlConnection(connString))
                 {
                     conn.Open();
@@ -321,13 +318,11 @@ namespace AirlineReservation.Models
                             comando.Connection = conn;
                             comando.Transaction = t;
                             comando.ExecuteNonQuery();
-
                         }
                         else
                         {
                             return "El usuario no puede realizar check-in, no se ha pagado el total del pasaje";
                         }
-
                     }
                     else
                     {
@@ -341,9 +336,35 @@ namespace AirlineReservation.Models
             catch (Exception ex)
             {
                 return ex.Message;
-
             }
             return "Se ha realizado el check-in de forma exitosa =)";
+        }
+
+        /// <summary>
+        /// Cancela una reserva de itinerario
+        /// (miturriaga)
+        /// </summary>
+        public string CancelReservation()
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
+
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+                    NpgsqlTransaction t = conn.BeginTransaction();
+                    
+                    t.Commit();
+                    conn.Close();
+                    return "";
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion
