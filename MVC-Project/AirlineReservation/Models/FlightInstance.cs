@@ -400,6 +400,41 @@ namespace AirlineReservation.Models
                 return ex.Message;
             }
         }
+
+        /// <summary>
+        /// Cancela una instancia de vuelo
+        /// (miturriaga)
+        /// </summary>
+        public string CancelInstance()
+        {
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
+
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+                    NpgsqlTransaction t = conn.BeginTransaction();
+
+                    try
+                    {
+                        
+                        t.Commit();
+                        conn.Close();
+                        return "";
+                    }
+                    catch (Exception ex)
+                    {
+                        t.Rollback();
+                        return ex.Message;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
         #endregion
     }
 }

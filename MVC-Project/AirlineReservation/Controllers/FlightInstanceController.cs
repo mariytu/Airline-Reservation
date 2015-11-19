@@ -85,5 +85,23 @@ namespace AirlineReservation.Controllers
 
             return RedirectToAction("ChangeAirplane", new { id = flightInstance.ID });
         }
+
+        /// <summary>
+        /// POST /FlightInstance/CancelInstance/5
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CancelInstance(long id)
+        {
+            var flightInstance = new Models.FlightInstance();
+
+            if (flightInstance.Seleccionar(id))
+            {
+                String mensaje = flightInstance.CancelInstance();
+                TempData["shortMessage"] = mensaje;
+            }
+
+            return RedirectToAction("Index", new { pagina = 1 });
+        }
     }
 }

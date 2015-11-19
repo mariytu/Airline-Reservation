@@ -100,6 +100,10 @@
                                                 <input type="submit" value="Total Pasajeros" class="btn btn-outline btn-primary btn-xs" />
                                             </form>
                                             @Html.ActionLink("Cambiar avión", "ChangeAirplane", new { id = item.ID }, new { @class = "btn btn-outline btn-warning btn-xs" })
+                                            <form method="post" action="/FlightInstance/CancelInstance/@item.ID">
+                                                @Html.AntiForgeryToken()
+                                                <input type="submit" value="Cancelar Vuelo" class="btn btn-outline btn-danger btn-xs" />
+                                            </form>
                                         </td>
                                     </tr>
                                 }
