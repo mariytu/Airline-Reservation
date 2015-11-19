@@ -54,9 +54,13 @@ namespace AirlineReservation.Models
                 {
                     return "Check-in";
                 }
-                else
+                else if (this.ReservationStateID == 3)
                 {
                     return "Finished";
+                }
+                else
+                {
+                    return "Canceled";
                 }
             }
         }
@@ -282,45 +286,47 @@ namespace AirlineReservation.Models
 
                     var comando = new NpgsqlCommand()
                     {
-                        CommandText = "SELECT COUNT(*) FROM \"ItineraryReservation\" LEFT JOIN \"ReservationState\" ON \"ReservationState\".\"reservationID\" = \"ItineraryReservation\".\"reservationState\" " +
-                                      "WHERE \"ItineraryReservation\".\"reservationID\" = :id AND \"ReservationState\".\"reservationName\" = 'Reserved'"
+                        CommandText = "SELECT COUNT(*) FROM \"ItineraryReservation\" LEFT JOIN \"ReservationState\" ON \"ReservationState\".\"reservationID\" = \"ItineraryReservation\".\"reservationState\" WHERE   \"ItineraryReservation\".\"reservationID\" = :id AND	\"ReservationState\".\"reservationName\" = 'Reserved';"
                     };
                     comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
                     comando.Parameters[0].Value = this.ID;
                     comando.Connection = conn;
                     comando.Transaction = t;
 
-                    int algo = (int)comando.ExecuteScalar();
-               
-                    
-                   if(algo > 0){
+                    var resultado = comando.ExecuteScalar();
 
-                       comando = new NpgsqlCommand()
-                       {
-                           CommandText = "SELECT  \"Payment\".\"paymentAmount\" FROM \"ItineraryReservation\" LEFT JOIN \"Payment\" ON \"Payment\".\"paymentID\" = \"ItineraryReservation\".\"paymentID\" WHERE   \"ItineraryReservation\".\"reservationID\" ="+this.ID+""
+                    int resultado2 = Convert.ToInt32(resultado);
 
-                       };
-                       comando.Connection = conn;
-                       comando.Transaction = t;
+                    if (resultado2 > 0)
+                    {
+                        comando = new NpgsqlCommand()
+                        {
+                            CommandText = "SELECT  \"Payment\".\"paymentAmount\" FROM \"ItineraryReservation\" LEFT JOIN \"Payment\" ON \"Payment\".\"paymentID\" = \"ItineraryReservation\".\"paymentID\" WHERE \"ItineraryReservation\".\"reservationID\" = :id ;"
+                        };
+                        comando.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
+                        comando.Parameters[0].Value = this.ID;
+                        comando.Connection = conn;
+                        comando.Transaction = t;
 
-                       int monto = (int)comando.ExecuteScalar();
+                        resultado = comando.ExecuteScalar();
 
+                       int  monto = Convert.ToInt32(resultado);
+                        if(monto > 0){
+                            comando = new NpgsqlCommand()
+                            {
+                                CommandText = "UPDATE \"ItineraryReservation\" SET \"reservationState\" = 2 WHERE \"ItineraryReservation\".\"reservationID\" = :inID;"
+                            };
+                            comando.Parameters.Add(new NpgsqlParameter("inID", NpgsqlDbType.Integer));
+                            comando.Parameters[0].Value = this.ID;
+                            comando.Connection = conn;
+                            comando.Transaction = t;
+                            comando.ExecuteNonQuery();
 
+                        }
 
-
-                   }
-                   else
-                   {
-                       //retirno que no se ha encontrado la reservacion 
-                   }
-
-
-
-
-
-
-
-
+                    }
+                    t.Commit();
+                    conn.Close();
                 }
             }
                
