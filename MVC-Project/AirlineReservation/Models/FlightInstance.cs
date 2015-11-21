@@ -350,7 +350,7 @@ namespace AirlineReservation.Models
 
                             if (pasajeros > newCapacity) //Hay que cancelar algunas reservas!!!
                             {
-                                diff = newCapacity - pasajeros;
+                                diff = pasajeros - newCapacity;
 
                                 comando = new NpgsqlCommand()
                                 {
