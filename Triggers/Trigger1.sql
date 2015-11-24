@@ -23,7 +23,7 @@ BEGIN
 			"FlightReservation"."number" = 1 AND 
 			"FlightReservation"."flightInstanceID" = "FlightInstance"."flightInstanceID" LIMIT 1;
 	
-	IF (fecha >= (SELECT now()-'1 day'::interval) AND fecha <= (SELECT now()-'2 hours'::interval)) THEN -- Validacion de la regla de negocio
+	IF ((SELECT now()) >= (SELECT fecha-'1 day'::interval) AND (SELECT now()) <= (SELECT fecha-'2 hours'::interval)) THEN -- Validacion de la regla de negocio
 		RETURN NEW;
 	END IF;
 	
@@ -33,5 +33,5 @@ END;
 $check_in$ LANGUAGE plpgsql;
 
 CREATE TRIGGER  check_in
-BEFORE INSERT OR UPDATE ON "tineraryReservation"
+BEFORE INSERT OR UPDATE ON "ItineraryReservation"
 	FOR EACH ROW EXECUTE PROCEDURE CheckIn();
