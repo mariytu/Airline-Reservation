@@ -4,4 +4,4 @@ INSERT INTO "Payment"("paymentDate", "paymentAmount", "paymentTypeID")
 VALUES ((SELECT now()), (SELECT now()+'12 hours'::interval), 100, 2);
 
 INSERT INTO "Payment"("paymentDate", "paymentAmount", "paymentTypeID")
-VALUES ((SELECT now()), (SELECT now()+'70 hours'::interval), 100, 2);
+VALUES ((SELECT now()), (SELECT now()+'4 day'::interval), 100, 2);

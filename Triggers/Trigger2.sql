@@ -1,20 +1,24 @@
 CREATE OR REPLACE FUNCTION ValidarReservaImpaga()
-RETURNS TRIGGER AS $validar_reserva_impaga$
+RETURNS TRIGGER AS $validar_reserva_impaga$ DECLARE
+	fecha "Payment"."paymentDate"%TYPE;
+
 BEGIN
 	IF (TG_OP = 'UPDATE') THEN -- Validacion del evento que invoco
         IF (NEW."paymentDate" = OLD."paymentDate") THEN -- No cambio el estado de la reserva
 			--IF (NEW."paymentAmount" > 0) THEN
 				RETURN NEW;
-		ELSIF ((NEW."paymentDate" - OLD."paymentDate") <= 3) THEN 
-			RETURN NEW;
 		END IF;
+	ELSIF ((NEW."paymentDate" - OLD."paymentDate") <= 3) THEN 
+		RETURN NEW;
+	END IF;
 	
 	-- Fecha de la reserva
-	SELECT	"ItineraryReservation"."dateRervationMade" INTO fechaReserva 
+	SELECT	"ItineraryReservation"."dateRervationMade" INTO fecha 
 	FROM	"ItineraryReservation"
-	WHERE	"ItineraryReservation"."paymentID" = NEW."paymentID" 
-	
-	IF ((SELECT fechaReserva - NEW."paymentDate") <= 3) THEN -- Validacion de la regla de negocio
+	WHERE	"ItineraryReservation"."paymentID" = NEW."paymentID";
+
+	IF ((SELECT now()) <= (SELECT fecha + '3 day'::interval)) THEN
+	--IF ((SELECT fechaReserva - NEW."paymentDate") <= 3) THEN -- Validacion de la regla de negocio
 		IF (NEW."paymentAmount" > 0) THEN
 			RETURN NEW;
 		END IF;
