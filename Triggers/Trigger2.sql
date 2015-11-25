@@ -7,13 +7,13 @@ BEGIN
         IF (NEW."paymentDate" = OLD."paymentDate") THEN -- No cambio el estado de la reserva
 			--IF (NEW."paymentAmount" > 0) THEN
 				RETURN NEW;
+		ELSIF ((NEW."paymentDate" - OLD."paymentDate") <= '3 day'::interval) THEN 
+			RETURN NEW;
 		END IF;
-	ELSIF ((NEW."paymentDate" - OLD."paymentDate") <= 3) THEN 
-		RETURN NEW;
 	END IF;
 	
 	-- Fecha de la reserva
-	SELECT	"ItineraryReservation"."dateRervationMade" INTO fecha 
+	SELECT	"ItineraryReservation"."dateReservationMade" INTO fecha 
 	FROM	"ItineraryReservation"
 	WHERE	"ItineraryReservation"."paymentID" = NEW."paymentID";
 
