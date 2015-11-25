@@ -23,7 +23,10 @@ BEGIN
 			"FlightReservation"."number" = 1 AND 
 			"FlightReservation"."flightInstanceID" = "FlightInstance"."flightInstanceID" LIMIT 1;
 	
-	IF ((SELECT now()) >= (SELECT fecha-'1 day'::interval) AND (SELECT now()) <= (SELECT fecha-'2 hours'::interval)) THEN -- Validacion de la regla de negocio
+	IF ((SELECT now()) >= (SELECT fecha-'2 hours'::interval)) THEN -- Perdio el vuelo
+		RAISE EXCEPTION 'Usted ya perdio el vuelo =(';
+		RETURN NULL;
+	ELSIF ((SELECT now()) > (SELECT fecha-'1 day'::interval)) THEN -- Validacion de la regla de negocio
 		RETURN NEW;
 	END IF;
 	
