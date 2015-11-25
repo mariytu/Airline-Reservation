@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION ValidarMinimo()
 RETURNS TRIGGER AS $validar_minimo$ DECLARE
 	capacidad "Aircraft"."aircraftCapacity"%TYPE;
-	pasajeros integer;
+	pasajeros bigint;
 BEGIN
 	
 	IF (TG_OP = 'UPDATE') THEN -- Validacion del evento que invoco
@@ -20,12 +20,12 @@ BEGIN
 	SELECT	"Aircraft"."aircraftCapacity" INTO capacidad 
 	FROM	"FlightInstance", "Aircraft" 
 	WHERE	"FlightInstance"."flightInstanceID" = NEW."flightInstanceID" AND 
-			"FlightInstance"."aircraftID" = "Aircraft"."aircraftID"
+			"FlightInstance"."aircraftID" = "Aircraft"."aircraftID";
 	
 	-- Contar los pasajeros que hay en el vuelo
 	SELECT COUNT(*) INTO pasajeros
 	FROM "FlightReservation" 
-	WHERE "FlightReservation"."flightInstanceID" = NEW."flightInstanceID"
+	WHERE "FlightReservation"."flightInstanceID" = NEW."flightInstanceID";
 	
 	IF ((SELECT pasajeros*100/capacidad) > 10) THEN -- Validacion de la regla de negocio
 		RETURN NEW;
