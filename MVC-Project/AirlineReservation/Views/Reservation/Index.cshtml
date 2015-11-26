@@ -19,7 +19,7 @@
         <div class="ibox-content">
             @using (Html.BeginForm("BuscarVuelos", "Reservation", FormMethod.Post, new { @class = "form-horizontal" }))
             {
-
+                <input id="pagina" name="pagina" value="1" type="hidden" />
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Agente</label>
@@ -50,14 +50,14 @@
 
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label"> Aeropuerto Salida</label>
+                    <label class="col-sm-2 control-label"> Ciudad Salida</label>
 
                     <div class="col-sm-5">
                         <select class="form-control m-b" name="AeropuertoOrigenID" id="AeropuertoOrigenID">
-                            @{var aeropuertos = Model.AeropuertosTodos();}
-                            @foreach (var aeropuerto in aeropuertos)
+                            @{var ciudades = Model.AeropuertosTodos();}
+                            @foreach (var ciudad in ciudades)
                             {
-                                <option value="@aeropuerto.ID">@aeropuerto.Name</option>
+                                <option value="@ciudad.ID">@ciudad.Name</option>
                             }
                         </select>
                     </div>
@@ -65,13 +65,13 @@
 
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label"> Aeropuerto LLegada</label>
+                    <label class="col-sm-2 control-label"> Ciudad LLegada</label>
 
                     <div class="col-sm-5">
                         <select class="form-control m-b" name="AeropuertoDestinoID" id="AeropuertoDestinoID">
-                            @foreach (var aeropuerto in aeropuertos)
+                            @foreach (var ciudad in ciudades)
                             {
-                                <option value="@aeropuerto.ID">@aeropuerto.Name</option>
+                                <option value="@ciudad.ID">@ciudad.Name</option>
                             }
                         </select>
                     </div>

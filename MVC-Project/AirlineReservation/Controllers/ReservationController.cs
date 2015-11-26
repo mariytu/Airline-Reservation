@@ -17,13 +17,25 @@ namespace AirlineReservation.Controllers
         }
 
 
-        public ActionResult BuscarVuelos(AirlineReservation.Models.Reservacion reservacion)
+        public ActionResult BuscarVuelos(AirlineReservation.Models.Reservacion reservacion, int pagina)
         {
-            // hacer la busqueda por los datos que llegan 
+            ViewBag.cliente = reservacion.PasajeroID;
+            ViewBag.agente = reservacion.AgenciaID;
+            return View(reservacion.VuelosPosibles(pagina, reservacion.AeropuertoOrigenID, reservacion.AeropuertoDestinoID));
+        }
+
+        [HttpPost]
+        public ActionResult Reservar(int IDagent, int IDpassenger, int IDflightinstance, int IDAircraft)
+        {
+            AirlineReservation.Models.Reservacion reserva = new Models.Reservacion();
+
+            DateTime hora = DateTime.Now;
+            String respuesta = reserva.Reservar(hora,IDagent,IDpassenger,IDflightinstance,IDAircraft);
+
+            ViewBag.Message = respuesta;
 
 
-
-            return View();
+            return View("Index" , new AirlineReservation.Models.Reservacion());
         }
 
       

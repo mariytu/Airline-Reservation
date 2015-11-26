@@ -1,0 +1,115 @@
+﻿@model IEnumerable<AirlineReservation.Models.FlightInstance>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Lista de vuelos</h5>
+
+                </div>
+                <div class="ibox-content">
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StateID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FlightNumberID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RealDeparture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RealDepartureString)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RealArrival)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RealArrivalString)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstimatedDeparture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstimatedDepartureString)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstimatedArrival)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstimatedArrivalString)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AircraftID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.StateID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.State)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FlightNumberID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RealDeparture)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RealDepartureString)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RealArrival)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RealArrivalString)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstimatedDeparture)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstimatedDepartureString)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstimatedArrival)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstimatedArrivalString)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AircraftID)
+        </td>
+        <td>
+			@Html.ActionLink("Nada", "NAda", new { id=item.ID }, new { @class = "btn btn-primary btn-sm"})
+
+        </td>
+    </tr>
+}
+
+</table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+
+
+
