@@ -3,13 +3,8 @@ RETURNS TRIGGER AS $validar_reserva_impaga$ DECLARE
 	fecha "Payment"."paymentDate"%TYPE;
 
 BEGIN
-	IF (TG_OP = 'UPDATE') THEN -- Validacion del evento que invoco
-        IF (NEW."paymentDate" = OLD."paymentDate") THEN -- No cambio el estado de la reserva
-			--IF (NEW."paymentAmount" > 0) THEN
-				RETURN NEW;
-		ELSIF ((NEW."paymentDate" - OLD."paymentDate") <= '3 day'::interval) THEN 
-			RETURN NEW;
-		END IF;
+	IF (TG_OP = 'INSERT') THEN -- Validacion del evento que invoco
+        RETURN NEW;
 	END IF;
 	
 	-- Fecha de la reserva
@@ -17,7 +12,7 @@ BEGIN
 	FROM	"ItineraryReservation"
 	WHERE	"ItineraryReservation"."paymentID" = NEW."paymentID";
 
-	IF ((SELECT now()) <= (SELECT fecha + '3 day'::interval)) THEN
+	IF (NEW."paymentDate" <= (SELECT fecha + '3 day'::interval)) THEN
 	--IF ((SELECT fechaReserva - NEW."paymentDate") <= 3) THEN -- Validacion de la regla de negocio
 		IF (NEW."paymentAmount" > 0) THEN
 			RETURN NEW;
